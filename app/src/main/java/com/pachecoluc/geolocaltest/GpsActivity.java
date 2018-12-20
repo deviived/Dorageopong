@@ -28,6 +28,7 @@ import java.util.Locale;
 public class GpsActivity extends AppCompatActivity implements LocationListener {
 
     private final static int PERMISSION_REQUEST_FINE_LOC = 1312;
+    private static final int PERMISSION_REQUEST_SEND_SMS = 999;
 
     LocationManager locationManager;
     boolean isGPSEnabled;
@@ -82,6 +83,11 @@ public class GpsActivity extends AppCompatActivity implements LocationListener {
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction("android.intent.action.HEADSET_PLUG");
         registerReceiver(headsetPlugReceiver, intentFilter);
+
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.SEND_SMS) != PackageManager.PERMISSION_GRANTED ||
+                ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED ) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.SEND_SMS, Manifest.permission.READ_PHONE_STATE}, PERMISSION_REQUEST_SEND_SMS);
+        }
 
         locationManager = (LocationManager) getApplicationContext().getSystemService(LOCATION_SERVICE);
         isGPSEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);

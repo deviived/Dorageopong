@@ -38,9 +38,6 @@ public class ConnexionActivity extends AppCompatActivity implements View.OnClick
 
     String TAG = "tag";
 
-
-    private static final int PERMISSION_REQUEST_SEND_SMS = 999;
-
     Intent intent;
 
     @Override
@@ -55,14 +52,7 @@ public class ConnexionActivity extends AppCompatActivity implements View.OnClick
         emailInput = findViewById(R.id.email);
         passwordInput = findViewById(R.id.password);
 
-
         connectButton.setOnClickListener(this);
-
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.SEND_SMS) != PackageManager.PERMISSION_GRANTED ||
-                ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED ) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.SEND_SMS, Manifest.permission.READ_PHONE_STATE}, PERMISSION_REQUEST_SEND_SMS);
-        }
-
 
         intent = new Intent(this, GpsActivity.class);
     }
