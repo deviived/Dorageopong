@@ -16,6 +16,7 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.SoundPool;
 import android.os.Vibrator;
+import android.telephony.SmsManager;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -61,6 +62,8 @@ public class GameView extends View implements View.OnTouchListener, SensorEventL
 
     private ArrayList<Particle> particles = new ArrayList<Particle>();
 
+    SmsManager sms;
+
     public GameView(Context context) {
         super(context);
 
@@ -94,9 +97,10 @@ public class GameView extends View implements View.OnTouchListener, SensorEventL
         sensorManager = (SensorManager) getContext().getSystemService(Context.SENSOR_SERVICE);
         sensorManager.registerListener(this, sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),SensorManager.SENSOR_DELAY_GAME);
 
-        //opening.start();
         gameOverIntent = new Intent(getContext(), GameOver.class);
         this.setOnTouchListener(this);
+
+        sms = SmsManager.getDefault();
     }
 
     @Override
@@ -152,9 +156,12 @@ public class GameView extends View implements View.OnTouchListener, SensorEventL
             else{
                 ball.setVitX(8);
             }
-
             acceleration = 0;
             SCORE_ME += 1;
+            if(SCORE_ME == 10){
+                sendSms(true);
+                gameOver();
+            }
         }
         if((ball.getPosY() > myScreen.getHeight())){
             ball.setPosY(myScreen.getHeight()/2);
@@ -167,7 +174,10 @@ public class GameView extends View implements View.OnTouchListener, SensorEventL
             }
             acceleration = 0;
             SCORE_ENNEMY += 1;
-            //gameOver();
+            if(SCORE_ENNEMY == 10){
+                sendSms(false);
+                gameOver();
+            }
         }
         if((Math.abs(doigt - ball.getPosX()) <= 134) && Math.abs(myScreen.getHeight()-(ball.getPosY()+45)) <= 65){
             v.vibrate(300);
@@ -295,6 +305,14 @@ public class GameView extends View implements View.OnTouchListener, SensorEventL
         activity.finish();
     }
 
+    public void sendSms(boolean win){
+        if(win){
+            sms.sendTextMessage("",null,"You win!", null , null);
+        }else{
+            sms.sendTextMessage("",null,"You lose!", null , null);
+        }
+    }
+
     public boolean onTouch(View v, MotionEvent m){
         //GET TOUCH XPOS
         doigt = m.getX();
@@ -310,13 +328,10 @@ public class GameView extends View implements View.OnTouchListener, SensorEventL
             Log.e("testAcc", "value : "+x);
 
             if((x < -1) && ((doigt + 134) < myScreen.getWidth())) {
-                doigt+=15;
+                doigt+=8;
             } else if ((x > 1) && ((doigt-134) >= 0)) {
-                doigt -=15;
+                doigt -=8;
             }
-
-            //invalidate();
-
         }
     }
 
