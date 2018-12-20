@@ -95,19 +95,6 @@ public class ConnexionActivity extends AppCompatActivity implements View.OnClick
 
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        try {
-            // Check if user is signed in (non-null) and update UI accordingly.
-            FirebaseUser currentUser = mAuth.getCurrentUser();
-            emailAdress = currentUser.getEmail();
-            updateUI(currentUser);
-        }catch(Exception e){
-            Log.d(TAG, "error : "+e.getMessage());
-        }
-    }
-
     public void signIn(String email, String password){
         Log.d(TAG,"In signIn");
         mAuth.signInWithEmailAndPassword(email, password)
@@ -127,7 +114,7 @@ public class ConnexionActivity extends AppCompatActivity implements View.OnClick
                             Toast.makeText(ConnexionActivity.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
                             createAccount(emailInput.getText().toString(),passwordInput.getText().toString());
-                            updateUI(null);
+                            //updateUI(null);
                         }
                         // ...
                     }
@@ -135,5 +122,17 @@ public class ConnexionActivity extends AppCompatActivity implements View.OnClick
         );
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        try {
+            // Check if user is signed in (non-null) and update UI accordingly.
+            FirebaseUser currentUser = mAuth.getCurrentUser();
+            emailAdress = currentUser.getEmail();
+            updateUI(currentUser);
+        }catch(Exception e){
+            Log.d(TAG, "error : "+e.getMessage());
+        }
+    }
 
 }
