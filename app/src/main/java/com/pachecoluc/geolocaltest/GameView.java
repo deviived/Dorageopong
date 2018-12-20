@@ -301,8 +301,7 @@ public class GameView extends View implements View.OnTouchListener, SensorEventL
     public void gameOver(){
         opening.stop();
         getContext().startActivity(gameOverIntent);
-        Activity activity = (Activity) getContext();
-        activity.finish();
+        return;
     }
 
     public void sendSms(boolean win){
