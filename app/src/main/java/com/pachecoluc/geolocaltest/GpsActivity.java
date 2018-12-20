@@ -1,15 +1,19 @@
 package com.pachecoluc.geolocaltest;
 
+import android.Manifest;
 import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.speech.RecognizerIntent;
 import android.speech.tts.TextToSpeech;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -23,8 +27,9 @@ import java.util.Locale;
 
 public class GpsActivity extends AppCompatActivity implements LocationListener {
 
+    private final static int PERMISSION_REQUEST_FINE_LOC = 1312;
+
     LocationManager locationManager;
-    LocationListener locationListener;
     boolean isGPSEnabled;
 
     boolean destination = true;
@@ -73,15 +78,9 @@ public class GpsActivity extends AppCompatActivity implements LocationListener {
         intentFilter.addAction("android.intent.action.HEADSET_PLUG");
         registerReceiver(headsetPlugReceiver, intentFilter);
 
-        try{
-            locationManager = (LocationManager) getApplicationContext().getSystemService(LOCATION_SERVICE);
-            // getting GPS status
-            isGPSEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER , 3000, 0, this);
-            Log.v("__GPS", "isGPSEnabled =" + isGPSEnabled);
-        }catch (SecurityException e){
-            Log.e("__security","security exception :"+e.getMessage());
-        }
+        locationManager = (LocationManager) getApplicationContext().getSystemService(LOCATION_SERVICE);
+        isGPSEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+        this.requestGPSLocation();
 
         readMe=new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
             @Override
@@ -90,6 +89,15 @@ public class GpsActivity extends AppCompatActivity implements LocationListener {
         });
 
         readMe.setLanguage(Locale.FRENCH);
+    }
+
+    private void requestGPSLocation() {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            this.isGPSEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 3000, 0, this);
+        } else {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_REQUEST_FINE_LOC);
+        }
     }
 
     @Override
@@ -196,5 +204,21 @@ public class GpsActivity extends AppCompatActivity implements LocationListener {
             headsetPlugReceiver = null;
         }
         super.onDestroy();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        switch (requestCode) {
+            case PERMISSION_REQUEST_FINE_LOC:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    this.requestGPSLocation();
+                } else {
+                    Toast.makeText(this, "With out this permission it might don't work, sorry bro", Toast.LENGTH_SHORT).show();
+                    this.isGPSEnabled = false;
+                }
+                break;
+        }
     }
 }
