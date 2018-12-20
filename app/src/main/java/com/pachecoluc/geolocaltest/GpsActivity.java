@@ -193,6 +193,7 @@ public class GpsActivity extends AppCompatActivity implements LocationListener {
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
             case 666: {
+                if (data == null) break;
                 ArrayList<String> result = data
                         .getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
                 text = result.get(0);
