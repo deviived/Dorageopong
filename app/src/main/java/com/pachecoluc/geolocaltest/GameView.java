@@ -1,8 +1,10 @@
 package com.pachecoluc.geolocaltest;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -16,7 +18,9 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.SoundPool;
 import android.os.Vibrator;
+import android.support.v4.app.ActivityCompat;
 import android.telephony.SmsManager;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -35,6 +39,7 @@ public class GameView extends View implements View.OnTouchListener, SensorEventL
     Intent gameOverIntent;
     boolean fail = false;
     float acceleration = 0;
+    boolean isRunning = true;
 
     //SCORE
     int SCORE_ME = 0;
@@ -61,6 +66,8 @@ public class GameView extends View implements View.OnTouchListener, SensorEventL
     private Bitmap nuageResizedEnnemi;
 
     private ArrayList<Particle> particles = new ArrayList<Particle>();
+    private String phoneNumber = null;
+    private TelephonyManager telephonyManager;
 
     SmsManager sms;
 
@@ -70,6 +77,8 @@ public class GameView extends View implements View.OnTouchListener, SensorEventL
         //SET RESOURCES
         paint = new Paint();
         this.setBackgroundResource(R.drawable.db_pont);
+
+        isRunning = true;
 
         //CLOUDS BITMAP
         nuage = BitmapFactory.decodeResource(getResources(), R.drawable.nuagemagique);
@@ -100,6 +109,7 @@ public class GameView extends View implements View.OnTouchListener, SensorEventL
         gameOverIntent = new Intent(getContext(), GameOver.class);
         this.setOnTouchListener(this);
 
+        this.telephonyManager = (TelephonyManager)this.getContext().getSystemService(Context.TELEPHONY_SERVICE);
         sms = SmsManager.getDefault();
     }
 
@@ -140,7 +150,7 @@ public class GameView extends View implements View.OnTouchListener, SensorEventL
         ballParticles();
         iA(ennemi);
 
-        invalidate();
+        if (this.isRunning) invalidate();
     }
 
     public void checkCollisions(Ballon ball){
@@ -160,6 +170,7 @@ public class GameView extends View implements View.OnTouchListener, SensorEventL
             SCORE_ME += 1;
             if(SCORE_ME == 10){
                 sendSms(true);
+                isRunning = false;
                 gameOver();
             }
         }
@@ -305,10 +316,18 @@ public class GameView extends View implements View.OnTouchListener, SensorEventL
     }
 
     public void sendSms(boolean win){
+        String msg;
         if(win){
-            sms.sendTextMessage("",null,"You win!", null , null);
+            msg = "You win!";
         }else{
-            sms.sendTextMessage("",null,"You lose!", null , null);
+            msg = "You lose!";
+        }
+        try {
+            String phonenumber = this.telephonyManager.getLine1Number();
+            if (phonenumber != null && phonenumber != "???????" && phonenumber != "")
+                sms.sendTextMessage("", null, "You lose!", null, null);
+        } catch (SecurityException e) {
+
         }
     }
 
