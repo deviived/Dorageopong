@@ -217,8 +217,6 @@ public class GpsActivity extends AppCompatActivity implements LocationListener {
                         compteur++;
                     }
                     else{
-                        Toast.makeText(getBaseContext(),"Tu n'as plus de vies",Toast.LENGTH_LONG).show();
-                        readMe.speak("Tu n'as plus de vies", TextToSpeech.QUEUE_FLUSH,null);
                         startActivity(intentPong);
                     }
                 }
