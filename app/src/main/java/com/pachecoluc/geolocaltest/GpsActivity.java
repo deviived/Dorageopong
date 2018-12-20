@@ -30,7 +30,7 @@ public class GpsActivity extends AppCompatActivity implements LocationListener {
     boolean connectedHeadphones;
 
     int compteur = 0;
-    int limite = 4;
+    int limite = 1;
 
     //LAYOUT ELEM
     TextView lng;
@@ -204,7 +204,6 @@ public class GpsActivity extends AppCompatActivity implements LocationListener {
                         Toast.makeText(getBaseContext(),"Tu n'as plus de vies",Toast.LENGTH_LONG).show();
                         readMe.speak("Tu n'as plus de vies", TextToSpeech.QUEUE_FLUSH,null);
                         startActivity(intentPong);
-
                     }
                 }
                 else{
