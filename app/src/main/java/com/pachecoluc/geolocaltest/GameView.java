@@ -20,6 +20,8 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
+import java.util.ArrayList;
+
 public class GameView extends View implements View.OnTouchListener, SensorEventListener {
 
     private Paint paint;
@@ -56,6 +58,8 @@ public class GameView extends View implements View.OnTouchListener, SensorEventL
     private Bitmap nuageResized;
     private Bitmap nuageEnnemi;
     private Bitmap nuageResizedEnnemi;
+
+    private ArrayList<Particle> particles = new ArrayList<Particle>();
 
     public GameView(Context context) {
         super(context);
@@ -106,6 +110,11 @@ public class GameView extends View implements View.OnTouchListener, SensorEventL
         myScreen.setWidth(canvas.getWidth());
         myScreen.setHeight(canvas.getHeight());
 
+        //DRAW Ballon particle
+        for (Particle particle : particles) {
+            particle.draw(canvas);
+        }
+
         //DRAW SCREEN ELEMENTS
         canvas.drawBitmap(bouleResized, ballon.getPosX() -45, ballon.getPosY() -45,paint);
         canvas.drawBitmap(nuageResized,doigt -134, myScreen.getHeight() -100, paint);
@@ -124,6 +133,7 @@ public class GameView extends View implements View.OnTouchListener, SensorEventL
 
         //MOVEMENTS
         ballMovement(ballon);
+        ballParticles();
         iA(ennemi);
 
         invalidate();
@@ -223,6 +233,29 @@ public class GameView extends View implements View.OnTouchListener, SensorEventL
     public void ballMovement(Ballon ball){
         ball.setPosX(ball.getPosX()+ball.getVitX());
         ball.setPosY(ball.getPosY()+ball.getVitY());
+    }
+
+    private void ballParticles() {
+        for (int i = 0; i < 5; i++) {
+            double angle = Math.random()* Math.PI * 2;
+            int cx = (int)(Math.cos(angle) * (this.ballon.getRad() / 1.5));
+            int cy = (int)(Math.sin(angle) * (this.ballon.getRad()  / 1.5));
+            particles.add(new Particle(
+                    (int)this.ballon.getPosX() + cx,
+                    (int)this.ballon.getPosY() + cy,
+                    this.ballon.getVitX() < 0,
+                    this.ballon.getVitY() < 0
+            ));
+        }
+
+
+        for (int i = 0; i < particles.size(); i++)
+        {
+            particles.get(i).update();
+            if (particles.get(i).isDead()) {
+                particles.remove(i);
+            }
+        }
     }
 
     public void iA(Ennemi enemy){
