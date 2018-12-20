@@ -1,9 +1,12 @@
 package com.pachecoluc.geolocaltest;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -35,6 +38,9 @@ public class ConnexionActivity extends AppCompatActivity implements View.OnClick
 
     String TAG = "tag";
 
+
+    private static final int PERMISSION_REQUEST_SEND_SMS = 999;
+
     Intent intent;
 
     @Override
@@ -51,6 +57,12 @@ public class ConnexionActivity extends AppCompatActivity implements View.OnClick
 
 
         connectButton.setOnClickListener(this);
+
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.SEND_SMS) != PackageManager.PERMISSION_GRANTED ||
+                ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED ) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.SEND_SMS, Manifest.permission.READ_PHONE_STATE}, PERMISSION_REQUEST_SEND_SMS);
+        }
+
 
         intent = new Intent(this, GpsActivity.class);
     }
