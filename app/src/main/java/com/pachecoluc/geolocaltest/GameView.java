@@ -324,8 +324,9 @@ public class GameView extends View implements View.OnTouchListener, SensorEventL
         }
         try {
             String phonenumber = this.telephonyManager.getLine1Number();
-            if (phonenumber != null && phonenumber != "???????" && phonenumber != "")
-                sms.sendTextMessage(phonenumber, null, "You lose!", null, null);
+            if (phonenumber != null && !phonenumber.equals("")) {
+                    sms.sendTextMessage(phonenumber, null, "You lose!", null, null);
+            }
         } catch (SecurityException e) {
 
         }
@@ -343,7 +344,7 @@ public class GameView extends View implements View.OnTouchListener, SensorEventL
             float[] values = event.values;
             // Movement
             float x = values[0];
-            Log.e("testAcc", "value : "+x);
+            //Log.e("testAcc", "value : "+x);
 
             if((x < -1) && ((doigt + 134) < myScreen.getWidth())) {
                 doigt+=8;

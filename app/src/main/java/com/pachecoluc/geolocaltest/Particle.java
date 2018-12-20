@@ -30,8 +30,8 @@ public class Particle {
     }
 
     public void draw(Canvas canvas) {
-        //canvas.drawCircle(this.x, this.y, 5, this.painter);
-        canvas.drawRect(this.x - 5, this.y - 5, this.x + 5, this.y + 5, this.painter);
+        canvas.drawCircle(this.x, this.y, 5, this.painter);
+        //canvas.drawRect(this.x - 5, this.y - 5, this.x + 5, this.y + 5, this.painter);
     }
 
     public void update() {
