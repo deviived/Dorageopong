@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "206684882268",
+    "firebase_url": "https://geolocaltest-b811d.firebaseio.com",
+    "project_id": "geolocaltest-b811d",
+    "storage_bucket": "geolocaltest-b811d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:206684882268:android:ba288e39eabe761e",
+        "android_client_info": {
+          "package_name": "com.pachecoluc.geolocaltest"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "206684882268-lpgii8bpatjfj6rj2q9fovdel54ivf47.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.pachecoluc.geolocaltest",
+            "certificate_hash": "036791711f99d115249e7ebf2a4739a0a453ee10"
+          }
+        },
+        {
+          "client_id": "206684882268-di4itrsfgmkj80kriu498enfp9e84h7t.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAJiFp1mbi0eQjiDAlZVtqEbEovXvCMJdw"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "206684882268-di4itrsfgmkj80kriu498enfp9e84h7t.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

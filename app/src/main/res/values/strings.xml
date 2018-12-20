@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">geoLocalTest</string>
+    <string name="title_activity">Vous êtes ici :</string>
+</resources>
