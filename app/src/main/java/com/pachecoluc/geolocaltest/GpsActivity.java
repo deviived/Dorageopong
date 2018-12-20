@@ -24,11 +24,13 @@ import java.util.Locale;
 public class GpsActivity extends AppCompatActivity implements LocationListener {
 
     LocationManager locationManager;
-    LocationListener locationListener;
     boolean isGPSEnabled;
 
     boolean destination = true;
     boolean connectedHeadphones;
+
+    int compteur = 0;
+    int limite = 4;
 
     //LAYOUT ELEM
     TextView lng;
@@ -36,16 +38,18 @@ public class GpsActivity extends AppCompatActivity implements LocationListener {
     TextView dest;
     Button record;
 
-    //
+    //COORDONNEES
     double latitude;
     double longitude;
-
     double lat_Tacos = 49.0355476;
     double lng_Tacos = 2.0772146;
 
     HeadsetPlugReceiver headsetPlugReceiver;
     TextToSpeech readMe;
     String distanceR = "Votre GPS n'est pas actif";
+    String text;
+
+    Intent intentPong;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,6 +94,8 @@ public class GpsActivity extends AppCompatActivity implements LocationListener {
         });
 
         readMe.setLanguage(Locale.FRENCH);
+
+        intentPong = new Intent(this, MainActivity.class);
     }
 
     @Override
@@ -178,11 +184,31 @@ public class GpsActivity extends AppCompatActivity implements LocationListener {
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
             case 666: {
-                if (resultCode == RESULT_OK && null != data) {
-                    ArrayList<String> result = data
-                            .getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
-                    String text = result.get(0);
-                    readMe.speak(""+distanceR, TextToSpeech.QUEUE_FLUSH,null);
+                ArrayList<String> result = data
+                        .getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+                text = result.get(0);
+                Log.d("result","result = "+text);
+                if ((resultCode == RESULT_OK && null != data) && text.equalsIgnoreCase("distance")) {
+                    if(compteur < limite){
+
+                        lat.setText("Latitude: "+ latitude);
+                        lng.setText("Longitude: " + longitude);
+                        dest.setText("Distance : " + distanceR);
+
+                        //if(connectedHeadphones) {
+                        readMe.speak(""+distanceR, TextToSpeech.QUEUE_FLUSH,null);
+                        //}
+                        compteur++;
+                    }
+                    else{
+                        Toast.makeText(getBaseContext(),"Tu n'as plus de vies",Toast.LENGTH_LONG).show();
+                        readMe.speak("Tu n'as plus de vies", TextToSpeech.QUEUE_FLUSH,null);
+                        startActivity(intentPong);
+
+                    }
+                }
+                else{
+                    readMe.speak("wazaaaaaaaaa", TextToSpeech.QUEUE_FLUSH,null);
                 }
                 break;
             }
