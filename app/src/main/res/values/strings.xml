@@ -1,6 +1,6 @@
 <resources>
-    <string name="app_name">geoLocalTest</string>
+    <string name="app_name">DBGTcestmieux</string>
     <string name="title_activity">Vous êtes ici :</string>
-    <string name="gameover_title">YOU FAIL LOSER</string>
-    <string name="gameover_description">You failed! ou are a fucking piece of shit, go fuck yourself!</string>
+    <string name="gameover_title">Vous avez fini</string>
+    <string name="gameover_description">Vous venez de finir</string>
 </resources>
