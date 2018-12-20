@@ -168,7 +168,7 @@ public class GameView extends View implements View.OnTouchListener, SensorEventL
             }
             acceleration = 0;
             SCORE_ME += 1;
-            if(SCORE_ME == 10){
+            if(SCORE_ME == 2){
                 sendSms(true);
                 isRunning = false;
                 gameOver();
@@ -185,7 +185,7 @@ public class GameView extends View implements View.OnTouchListener, SensorEventL
             }
             acceleration = 0;
             SCORE_ENNEMY += 1;
-            if(SCORE_ENNEMY == 10){
+            if(SCORE_ENNEMY == 2){
                 sendSms(false);
                 gameOver();
             }
@@ -312,8 +312,7 @@ public class GameView extends View implements View.OnTouchListener, SensorEventL
     public void gameOver(){
         opening.stop();
         getContext().startActivity(gameOverIntent);
-        Activity activity = (Activity) getContext();
-        activity.finish();
+        return;
     }
 
     public void sendSms(boolean win){
@@ -326,7 +325,7 @@ public class GameView extends View implements View.OnTouchListener, SensorEventL
         try {
             String phonenumber = this.telephonyManager.getLine1Number();
             if (phonenumber != null && phonenumber != "???????" && phonenumber != "")
-                sms.sendTextMessage("", null, "You lose!", null, null);
+                sms.sendTextMessage(phonenumber, null, "You lose!", null, null);
         } catch (SecurityException e) {
 
         }
