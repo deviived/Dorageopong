@@ -27,7 +27,7 @@ public class GameOver extends AppCompatActivity implements View.OnClickListener{
         int tag = (int) v.getTag(1);
         Log.d("gameover","tag : "+tag);
         if(tag == 1){
-            getBaseContext().startActivity(game);
+            startActivity(game);
         }
     }
 }
