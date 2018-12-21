@@ -16,7 +16,7 @@ public class GameOver extends AppCompatActivity implements View.OnClickListener{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gameover);
-        game = new Intent(getBaseContext(), MainActivity.class);
+        game = new Intent(this, MainActivity.class);
 
         buttonRetry = (Button) findViewById(R.id.button_retry);
         buttonRetry.setOnClickListener(this);
@@ -24,10 +24,6 @@ public class GameOver extends AppCompatActivity implements View.OnClickListener{
 
     @Override
     public void onClick(View v){
-        int tag = (int) v.getTag(1);
-        Log.d("gameover","tag : "+tag);
-        if(tag == 1){
-            startActivity(game);
-        }
+        startActivity(game);
     }
 }

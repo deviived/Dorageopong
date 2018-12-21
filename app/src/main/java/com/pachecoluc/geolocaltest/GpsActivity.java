@@ -37,7 +37,7 @@ public class GpsActivity extends AppCompatActivity implements LocationListener {
     boolean connectedHeadphones;
 
     int compteur = 0;
-    int limite = 1;
+    int limite = 3;
 
     //LAYOUT ELEM
     TextView lng;
@@ -128,9 +128,9 @@ public class GpsActivity extends AppCompatActivity implements LocationListener {
         latitude = location.getLatitude();
         longitude = location.getLongitude();
         distanceR = Integer.toString((int)( calculDist(latitude, longitude)))+" Mètres";
-        lat.setText("Latitude : "+Double.toString(latitude));
-        lng.setText("Longitude : "+Double.toString(longitude));
-        dest.setText("Distance restante : "+distanceR);
+        //lat.setText("Latitude : "+Double.toString(latitude));
+        //lng.setText("Longitude : "+Double.toString(longitude));
+        //dest.setText("Distance restante : "+distanceR);
         if(destination){
             destination = false;
           //  sendMsgIntent();
@@ -211,9 +211,9 @@ public class GpsActivity extends AppCompatActivity implements LocationListener {
                         lng.setText("Longitude: " + longitude);
                         dest.setText("Distance : " + distanceR);
 
-                        //if(connectedHeadphones) {
-                        readMe.speak(""+distanceR, TextToSpeech.QUEUE_FLUSH,null);
-                        //}
+                        if(connectedHeadphones) {
+                            readMe.speak(""+distanceR, TextToSpeech.QUEUE_FLUSH,null);
+                        }
                         compteur++;
                     }
                     else{
@@ -221,7 +221,7 @@ public class GpsActivity extends AppCompatActivity implements LocationListener {
                     }
                 }
                 else{
-                    readMe.speak("wazaaaaaaaaa", TextToSpeech.QUEUE_FLUSH,null);
+                    readMe.speak("Je n'ai pas compris!", TextToSpeech.QUEUE_FLUSH,null);
                 }
                 break;
             }

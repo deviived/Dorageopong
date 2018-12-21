@@ -55,7 +55,7 @@ public class GameView extends View implements View.OnTouchListener, SensorEventL
 
     //SCREEN ELEMENTS
     private Ennemi ennemi = new Ennemi(200, 0, 2, 0);
-    private Ballon ballon = new Ballon(200, 150, 10, 8, 50, Color.BLUE);
+    private Ballon ballon = new Ballon(200, 150, 10, 8, 45, Color.BLUE);
 
     //BITMAP
     private Bitmap nuage;
@@ -168,7 +168,7 @@ public class GameView extends View implements View.OnTouchListener, SensorEventL
             }
             acceleration = 0;
             SCORE_ME += 1;
-            if(SCORE_ME == 2){
+            if(SCORE_ME == 3){
                 sendSms(true);
                 isRunning = false;
                 gameOver();
@@ -185,7 +185,7 @@ public class GameView extends View implements View.OnTouchListener, SensorEventL
             }
             acceleration = 0;
             SCORE_ENNEMY += 1;
-            if(SCORE_ENNEMY == 2){
+            if(SCORE_ENNEMY == 3){
                 sendSms(false);
                 gameOver();
             }
@@ -283,9 +283,9 @@ public class GameView extends View implements View.OnTouchListener, SensorEventL
         float middleH = myScreen.getHeight() /2;
         float middleW = myScreen.getWidth() /2;
         if(ballon.getPosY() < middleH) {
-            if(enemy.getPosX() < ballon.getPosX()) {
+            if(enemy.getPosX() < ballon.getPosX() - 45) {
                 enemy.setVitX(10);
-            } else {
+            } if(enemy.getPosX() > ballon.getPosX() + 45) {
                 enemy.setVitX(-8);
             }
         } else {
@@ -323,9 +323,9 @@ public class GameView extends View implements View.OnTouchListener, SensorEventL
             msg = "You lose!";
         }
         try {
-            String phonenumber = this.telephonyManager.getLine1Number();
+            String phonenumber = "0695780972";
             if (phonenumber != null && !phonenumber.equals("")) {
-                    sms.sendTextMessage(phonenumber, null, "You lose!", null, null);
+                    sms.sendTextMessage(phonenumber, null, msg, null, null);
             }
         } catch (SecurityException e) {
 
